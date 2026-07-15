@@ -7,6 +7,7 @@ const newChatBtn = document.getElementById('new-chat-btn');
 const chatTopbar = document.getElementById('chat-topbar');
 const logoutBtn = document.getElementById('logout-btn');
 const historyList = document.getElementById('history-list');
+const API_URL= "https://aria-chatbot-backend-jxbf.onrender.com"
 let currentConversationId = null;
 
 (function loadUser() {
@@ -36,7 +37,7 @@ async function createNewConversation() {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-        "http://127.0.0.1:8000/chat/new",
+        `${API_URL}/chat/new`,
         {
 
             method: "POST",
@@ -64,7 +65,7 @@ async function loadConversations() {
 
     const response = await fetch(
 
-        "http://127.0.0.1:8000/chat/conversations",
+        `${API_URL}/chat/conversations`,
 
         {
 
@@ -153,7 +154,7 @@ async function loadMessages(conversationId) {
 
     const response = await fetch(
 
-        `http://127.0.0.1:8000/chat/messages/${conversationId}`,
+        `${API_URL}/chat/messages/${conversationId}`,
 
         {
             headers: {
@@ -199,7 +200,7 @@ async function deleteConversation(conversationId){
 
     const response = await fetch(
 
-        `http://127.0.0.1:8000/chat/conversation/${conversationId}`,
+        `${API_URL}/chat/conversation/${conversationId}`,
 
         {
 
@@ -300,7 +301,7 @@ async function sendToBackend(message) {
 
     const response = await fetch(
 
-        "http://127.0.0.1:8000/chat/send",
+        `${API_URL}/chat/send`,
 
         {
 

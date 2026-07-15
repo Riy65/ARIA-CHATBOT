@@ -1,5 +1,6 @@
 const signupForm = document.getElementById("signupForm");
 const signupBtn = document.getElementById("signupBtn");
+const API_URL= "https://aria-chatbot-backend-jxbf.onrender.com"
 
 signupForm.addEventListener("submit", async function (e) {
 
@@ -19,7 +20,7 @@ signupForm.addEventListener("submit", async function (e) {
     try {
 
         const response = await fetch(
-            "http://127.0.0.1:8000/auth/signup",
+            `${API_URL}/auth/signup`,
             {
                 method: "POST",
                 headers: {

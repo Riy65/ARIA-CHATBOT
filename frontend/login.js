@@ -1,5 +1,6 @@
 const loginForm = document.getElementById("loginForm");
 const loginBtn = document.getElementById("loginBtn");
+const API_URL= "https://aria-chatbot-backend-jxbf.onrender.com"
 
 loginForm.addEventListener("submit", async function (e) {
 
@@ -19,7 +20,7 @@ loginForm.addEventListener("submit", async function (e) {
     try {
 
         const response = await fetch(
-            "http://127.0.0.1:8000/auth/login",
+            `${API_URL}/auth/login`,
             {
                 method: "POST",
                 headers: {
