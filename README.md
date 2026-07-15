@@ -1,191 +1,101 @@
 # 🤖 Aria AI Chatbot
 
-Aria AI Chatbot is a full-stack AI-powered conversational application that provides an interactive chat experience with secure user authentication, persistent conversation history, and AI-generated responses using Google's Gemini API.
+Aria AI Chatbot is a full-stack AI-powered conversational web application that allows users to securely interact with an AI assistant, manage multiple conversations, and store chat history.
 
 ---
 
 ## ✨ Features
 
-- 🔐 User Authentication (Login & Signup)
-- 🤖 AI-powered conversations using Google Gemini
-- 💬 Multiple conversation support
-- 📝 Automatic conversation title generation
-- 📜 Persistent chat history
-- 🗑️ Delete conversations
-- 🔒 JWT-based authentication
-- 💾 MongoDB database integration
-- 📱 Clean and responsive user interface
+- Secure User Authentication (Login & Signup)
+- AI-powered Conversations using Google Gemini
+- Multiple Chat Sessions
+- Automatic Conversation Title Generation
+- Persistent Chat History
+- Delete Conversations
+- JWT Authentication
+- Responsive User Interface
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- HTML
-- CSS
-- JavaScript
-
-### Backend
-- FastAPI
-- Python
-
-### Database
-- MongoDB Atlas
-
-### AI Model
-- Google Gemini
-
-### Authentication
-- JWT
-- Passlib (Password Hashing)
-
-### Deployment
-- Render (Backend)
-- Vercel (Frontend)
+| Technology | Why it was used | Benefits |
+|------------|-----------------|----------|
+| **FastAPI** | Backend API development | High performance, automatic API documentation, easy REST API development |
+| **MongoDB Atlas** | Database | Flexible NoSQL storage, scalable, stores chat history efficiently |
+| **Google Gemini API** | AI response generation | Fast, high-quality AI responses with a generous free tier |
+| **JWT** | User Authentication | Secure, stateless authentication without server-side sessions |
+| **Passlib (bcrypt)** | Password Hashing | Prevents storing plain-text passwords and improves security |
+| **HTML, CSS, JavaScript** | Frontend Development | Lightweight, responsive, and easy to customize |
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
-```
+```text
 aria-chatbot/
 │
 ├── backend/
-│   ├── models/
 │   ├── routes/
+│   ├── models/
 │   ├── utils/
-│   ├── ai_client.py
-│   ├── database.py
 │   ├── main.py
-│   ├── schemas.py
 │   └── requirements.txt
 │
 ├── frontend/
 │   ├── index.html
 │   ├── login.html
 │   ├── signup.html
-│   ├── style.css
 │   ├── script.js
-│   ├── login.js
-│   └── signup.js
+│   ├── style.css
+│   └── ...
 │
 └── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 How to Run
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/aria-chatbot.git
-```
-
----
-
-### 2. Navigate to backend
+1. Clone the repository.
+2. Install backend dependencies:
 
 ```bash
-cd backend
+pip install -r backend/requirements.txt
 ```
 
----
-
-### 3. Create a virtual environment
-
-```bash
-python -m venv venv
-```
-
----
-
-### 4. Activate the virtual environment
-
-#### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-#### Linux / macOS
-
-```bash
-source venv/bin/activate
-```
-
----
-
-### 5. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### 6. Create a `.env` file
+3. Create a `.env` file inside `backend/`:
 
 ```env
 MONGO_URL=YOUR_MONGODB_CONNECTION_STRING
-
 GEMINI_API_KEY=YOUR_GEMINI_API_KEY
-
 JWT_SECRET_KEY=YOUR_SECRET_KEY
 ```
 
----
-
-### 7. Run the backend
+4. Start the backend:
 
 ```bash
 uvicorn main:app --reload
 ```
 
----
-
-### 8. Open the frontend
-
-Open `frontend/login.html` using Live Server.
+5. Open `frontend/login.html` using Live Server.
 
 ---
 
-## 🔒 Environment Variables
+## 🔮 Future Improvements
 
-| Variable | Description |
-|----------|-------------|
-| MONGO_URL | MongoDB Atlas connection string |
-| GEMINI_API_KEY | Google Gemini API Key |
-| JWT_SECRET_KEY | Secret key used for JWT authentication |
-
----
-
-## 📸 Screenshots
-
-Coming Soon
-
----
-
-## 🌐 Live Demo
-
-Coming Soon
+1. Password strength validation
+2. Email verification
+3. Forgot password functionality
+4. AI response streaming
+5. Dark mode
+6. Rate limiting
 
 ---
 
 ## 👩‍💻 Author
 
 **Riya Srivastava**
-
-## ⭐ Future Improvements
-
-- Password strength validation
-- Email validation
-- Password reset
-- Dark mode
-- Typing indicator
-- Streaming AI responses
-- Rate limiting
-
 ## 📚 Key Learning Outcomes
 
 1. Built a complete full-stack AI application from scratch.
