@@ -1,65 +1,59 @@
+
 import os
 from dotenv import load_dotenv
-from google import genai
+from openai import OpenAI
 
 load_dotenv()
 
-
-if not os.getenv("GEMINI_API_KEY"):
-    raise ValueError("GEMINI_API_KEY not found. Check your .env file.")
-
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY")
 )
 
-MODEL_NAME = "gemini-flash-latest"
+def get_ai_reply(messages):
 
+    response = client.chat.completions.create(
 
-def get_ai_reply(messages: list) -> str:
-    """
-    Sends conversation messages to Gemini
-    and returns the AI reply.
-    """
+        model="gpt-4.1-mini",
 
-    prompt = ""
+        messages=messages,
 
-    for message in messages:
+        temperature=0.7,
 
-        prompt += f"{message['role'].capitalize()}: {message['content']}\n\n"
-
-    response = client.models.generate_content(
-
-        model=MODEL_NAME,
-
-        contents=prompt
+        max_tokens=200
 
     )
 
-    return response.text.strip()
+    return response.choices[0].message.content
 
 
 def generate_chat_title(user_message, ai_reply):
 
-    prompt = f"""
-Generate a short title (maximum 5 words)
-for this conversation.
+    messages = [
 
-Return ONLY the title.
+        {
+            "role": "system",
+            "content":
+            "Generate a title in maximum 5 words. Return only the title."
+        },
 
-User:
-{user_message}
+        {
+            "role": "user",
+            "content":
+            f"User: {user_message}\nAssistant: {ai_reply}"
+        }
 
-Assistant:
-{ai_reply}
-"""
+    ]
 
-    response = client.models.generate_content(
+    response = client.chat.completions.create(
 
-        model=MODEL_NAME,
+        model="gpt-4.1-mini",
 
-        contents=prompt
+        messages=messages,
+
+        temperature=0.3,
+
+        max_tokens=10
 
     )
 
-    return response.text.strip()
-
+    return response.choices[0].message.content.strip()
