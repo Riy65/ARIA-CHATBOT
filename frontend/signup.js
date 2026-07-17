@@ -1,6 +1,6 @@
 const signupForm = document.getElementById("signupForm");
 const signupBtn = document.getElementById("signupBtn");
-const API_URL= "https://aria-chatbot-backend-jxbf.onrender.com"
+const API_URL= "https://aria-chatbot-1shq.onrender.com/"
 
 signupForm.addEventListener("submit", async function (e) {
 

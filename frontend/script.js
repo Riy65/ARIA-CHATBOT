@@ -7,7 +7,7 @@ const newChatBtn = document.getElementById('new-chat-btn');
 const chatTopbar = document.getElementById('chat-topbar');
 const logoutBtn = document.getElementById('logout-btn');
 const historyList = document.getElementById('history-list');
-const API_URL= "https://aria-chatbot-backend-jxbf.onrender.com"
+const API_URL= "https://aria-chatbot-1shq.onrender.com/"
 let currentConversationId = null;
 
 (function loadUser() {
