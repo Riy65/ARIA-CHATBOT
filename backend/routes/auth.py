@@ -2,10 +2,11 @@ from fastapi import APIRouter, HTTPException , Depends
 
 from models.user import UserCreate , UserLogin
 
-from utils.auth import hash_password
 from utils.auth import (
+    hash_password,
     verify_password,
-    create_access_token
+    create_access_token,
+    get_current_user
 )
 
 from database import db
