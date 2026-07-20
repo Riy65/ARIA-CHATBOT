@@ -7,8 +7,51 @@ const newChatBtn = document.getElementById('new-chat-btn');
 const chatTopbar = document.getElementById('chat-topbar');
 const logoutBtn = document.getElementById('logout-btn');
 const historyList = document.getElementById('history-list');
+
 const API_URL= "https://aria-chatbot-1shq.onrender.com"
 let currentConversationId = null;
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.replace("login.html");
+}
+
+async function verifyToken() {
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/auth/me`,
+            {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }
+        );
+
+        if (!response.ok) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("email");
+
+            window.location.replace("login.html");
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("email");
+
+        window.location.replace("login.html");
+    }
+
+}
+
+
 
 (function loadUser() {
 
@@ -500,13 +543,14 @@ logoutBtn.addEventListener("click", function () {
 
     localStorage.removeItem("email");
 
-    window.location.href = "login.html";
+    window.location.replace("login.html");
 
 });
 
 async function initializeChat() {
 
     try {
+        await verifyToken();
 
         await loadConversations();
 

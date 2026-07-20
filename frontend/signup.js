@@ -1,6 +1,11 @@
 const signupForm = document.getElementById("signupForm");
 const signupBtn = document.getElementById("signupBtn");
 const API_URL= "https://aria-chatbot-1shq.onrender.com"
+if (localStorage.getItem("token")) {
+
+    window.location.replace("index.html");
+
+}
 
 signupForm.addEventListener("submit", async function (e) {
 
