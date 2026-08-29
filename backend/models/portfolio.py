@@ -36,6 +36,23 @@ class PortfolioVersion(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     portfolio = relationship("Portfolio", back_populates="versions")
+    assessments = relationship("PortfolioAssessment", back_populates="portfolio_version", cascade="all, delete-orphan")
+
+
+class PortfolioAssessment(Base):
+    __tablename__ = "portfolio_assessments"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    portfolio_version_id: Mapped[UUID] = mapped_column(ForeignKey("portfolio_versions.id", ondelete="CASCADE"), index=True)
+    rubric_version: Mapped[str] = mapped_column(String(32))
+    overall_score: Mapped[int] = mapped_column(Integer)
+    category_scores: Mapped[dict] = mapped_column(JSON)
+    strengths: Mapped[list] = mapped_column(JSON)
+    gaps: Mapped[list] = mapped_column(JSON)
+    recommended_actions: Mapped[list] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    portfolio_version = relationship("PortfolioVersion", back_populates="assessments")
 
 
 class PortfolioCreate(BaseModel):

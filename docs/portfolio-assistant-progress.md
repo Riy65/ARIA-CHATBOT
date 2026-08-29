@@ -24,7 +24,7 @@ Evolve Aria from a general-purpose chatbot into a guided portfolio-building assi
 | Manual chat-based data collection | Foundation complete | A user-owned chat session can generate a review-only structured profile draft; saving requires confirmation. |
 | CV/resume/LinkedIn/document input | In progress | Professional links and document metadata are stored; private file storage and extraction remain. |
 | Portfolio data and versions | Foundation complete | User-owned workspaces start with version 1; every later save creates a separate immutable version. |
-| Standards-based strength score | Planned | A fixed, explainable rubric will be implemented after the portfolio data model. |
+| Standards-based strength score | Foundation complete | A deterministic 100-point rubric is saved against each assessed portfolio version. |
 | Existing MongoDB data migration | Planned | No existing data is migrated automatically. |
 
 ## Completed work
@@ -76,6 +76,15 @@ Status: Complete; pending approval and commit.
 - Every portfolio starts with an immutable version 1, and every later save creates a new sequential version.
 - Added APIs to create, list, inspect, and add a version to portfolios.
 - Verified locally that version 2 does not overwrite the original version content.
+
+### Task 6 — Explainable portfolio-strength score
+
+Status: Complete; pending approval and commit.
+
+- Added a deterministic 100-point rubric for completeness, impact evidence, skills clarity, project depth, experience depth, and target-role alignment.
+- Added assessment APIs that return an overall score, category scores, strengths, gaps, and prioritized actions.
+- Each assessment is saved against the exact immutable portfolio version it evaluated, preserving score history.
+- Verified locally that an assessment can be created and retrieved with explainable category results.
 
 ## Current technical baseline
 

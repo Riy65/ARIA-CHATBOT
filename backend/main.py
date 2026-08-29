@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import router as auth_router
 from routes.profile import router as profile_router
 from routes.portfolio import router as portfolio_router
+from routes.assessment import router as assessment_router
 from database import Base, engine
 from models import chat as chat_models
 from models import user as user_models
@@ -34,6 +35,7 @@ app.include_router(
 app.include_router(chat.router, prefix="/chat")
 app.include_router(profile_router, prefix="/profile", tags=["Profile"])
 app.include_router(portfolio_router, prefix="/portfolios", tags=["Portfolios"])
+app.include_router(assessment_router, prefix="/portfolios", tags=["Portfolio assessments"])
 
 
 @app.on_event("startup")
