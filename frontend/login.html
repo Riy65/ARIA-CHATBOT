@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aria - Login</title>
+    <title>Aria — Portfolio Assistant</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,60 +13,45 @@
 
 <body>
 
-<div class="auth-page">
-
-    <div class="auth-card">
-
-        <div class="logo">
-            <div class="mark"></div>
-            <span>Aria</span>
-        </div>
-
-        <h1>Welcome Back! Login</h1>
-
-        <p class="subtitle">
-            Login to continue your conversations.
-        </p>
+<main class="auth-page">
+    <section class="auth-intro" aria-label="About Aria">
+        <a class="brand" href="login.html" aria-label="Aria home"><span class="mark" aria-hidden="true"></span><span>Aria</span></a>
+        <p class="eyebrow">Portfolio intelligence</p>
+        <h1>Turn your experience into a portfolio that stands out.</h1>
+        <p class="intro-copy">Work with Aria to shape your story, identify gaps, and build a clearer professional presence.</p>
+        <div class="intro-points" aria-label="Aria features"><span>Guided portfolio building</span><span>Actionable readiness feedback</span><span>Private, continuous conversations</span></div>
+    </section>
+    <section class="auth-card" aria-labelledby="login-heading">
+        <a class="brand auth-brand" href="login.html" aria-label="Aria home"><span class="mark" aria-hidden="true"></span><span>Aria</span></a>
+        <p class="eyebrow">Welcome back</p>
+        <h2 id="login-heading">Continue building your portfolio</h2>
+        <p class="subtitle">Sign in to pick up exactly where you left off.</p>
 
         <form id="loginForm">
 
-            <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                required
-            >
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                required
-            >
+            <label for="email">Email address</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
 
             <button
                 type="submit"
                 id="loginBtn"
                 class="auth-btn"
             >
-                Login
+                Sign in
             </button>
 
         </form>
 
         <p class="auth-switch">
 
-            Don't have an account?
-
-            <a href="signup.html">
-                Sign Up
-            </a>
+            New to Aria? <a href="signup.html">Create an account</a>
 
         </p>
 
-    </div>
-
-</div>
+    </section>
+</main>
 
 <script src="login.js"></script>
 

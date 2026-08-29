@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aria - Sign Up</title>
+    <title>Aria — Create your account</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -14,60 +14,45 @@
 
 <body>
 
-<div class="auth-page">
-
-    <div class="auth-card">
-
-        <div class="logo">
-            <div class="mark"></div>
-            <span>Aria</span>
-        </div>
-
-        <h1>Create Account</h1>
-
-        <p class="subtitle">
-            Sign up to start chatting with Aria.
-        </p>
+<main class="auth-page">
+    <section class="auth-intro" aria-label="About Aria">
+        <a class="brand" href="login.html" aria-label="Aria home"><span class="mark" aria-hidden="true"></span><span>Aria</span></a>
+        <p class="eyebrow">Portfolio intelligence</p>
+        <h1>Build with more direction and less guesswork.</h1>
+        <p class="intro-copy">Capture your work, strengths, and ambitions in one guided portfolio workspace.</p>
+        <div class="intro-points" aria-label="Aria features"><span>Keep every version of your story</span><span>Get tailored improvement prompts</span><span>Prepare for your next opportunity</span></div>
+    </section>
+    <section class="auth-card" aria-labelledby="signup-heading">
+        <a class="brand auth-brand" href="login.html" aria-label="Aria home"><span class="mark" aria-hidden="true"></span><span>Aria</span></a>
+        <p class="eyebrow">Get started</p>
+        <h2 id="signup-heading">Create your workspace</h2>
+        <p class="subtitle">Your first guided portfolio conversation is only a few minutes away.</p>
 
         <form id="signupForm">
 
-            <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                required
-            >
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                required
-            >
+            <label for="email">Email address</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+            <label for="password">Create a password</label>
+            <input type="password" id="password" placeholder="At least 6 characters" autocomplete="new-password" required>
 
             <button
                 type="submit"
                 id="signupBtn"
                 class="auth-btn"
             >
-                Sign Up
+                Create account
             </button>
 
         </form>
 
         <p class="auth-switch">
 
-            Already have an account?
-
-            <a href="login.html">
-                Login
-            </a>
+            Already have an account? <a href="login.html">Sign in</a>
 
         </p>
 
-    </div>
-
-</div>
+    </section>
+</main>
 
 <script src="signup.js"></script>
 

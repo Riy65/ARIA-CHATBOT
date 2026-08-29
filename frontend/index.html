@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aria — Chat</title>
+<title>Aria — Portfolio Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -14,23 +14,16 @@
   <div class="sidebar">
     <div class="sidebar-brand">
       <div class="mark"></div>
-      <span>Aria</span>
+      <span>Aria</span><span class="brand-tag">Portfolio assistant</span>
     </div>
 
     <button class="new-chat-btn" id="new-chat-btn">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      New chat
+      New portfolio chat
     </button>
 
     <div class="history-list" id="history-list">
-      <div class="history-group-label">Today</div>
-      <div class="history-item active" data-title="FastAPI vs Node backend">FastAPI vs Node backend</div>
-      <div class="history-item" data-title="RAG pipeline design help">RAG pipeline design help</div>
-
-      <div class="history-group-label">Previous 7 days</div>
-      <div class="history-item" data-title="Resume ATS optimization">Resume ATS optimization</div>
-      <div class="history-item" data-title="DBMS ER diagram review">DBMS ER diagram review</div>
-      <div class="history-item" data-title="Hackathon dashboard ideas">Hackathon dashboard ideas</div>
+      <div class="history-empty">Your portfolio conversations will appear here.</div>
     </div>
 
     <div class="sidebar-footer">
@@ -44,28 +37,25 @@
   </div>
 
   <div class="chat-main">
-    <div class="chat-topbar" id="chat-topbar">FastAPI vs Node backend</div>
+    <div class="chat-topbar"><span id="chat-topbar">New portfolio conversation</span><span class="context-status">Context saved</span></div>
 
     <div class="chat-messages" id="chat-messages">
-      <div class="msg-row user">
-        <div class="bubble user">Which is better for an AI backend — FastAPI or Node.js?</div>
-      </div>
       <div class="msg-row ai">
         <div class="bubble ai">
           <div class="ai-label">Aria</div>
-          For AI-heavy backends, FastAPI usually wins — native async support, first-class typing with Pydantic, and it plays nicely with Python-based ML/LLM libraries without needing a separate service. Node is great for high-concurrency I/O apps, but you'd end up calling out to Python for most AI work anyway.
+          Welcome. Tell me about the role you want, your experience, or share the details you would like in your portfolio. We’ll build it one clear step at a time.
         </div>
       </div>
     </div>
 
     <div class="composer">
       <div class="composer-inner">
-        <textarea id="msg-input" rows="1" placeholder="Message Aria..."></textarea>
+        <textarea id="msg-input" rows="1" placeholder="Share your experience, goals, or portfolio details…"></textarea>
         <button class="send-btn" id="send-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </button>
       </div>
-      <div class="composer-hint">Aria can make mistakes. Check important info.</div>
+      <div class="composer-hint">Your conversation context is saved to help Aria give more relevant guidance.</div>
     </div>
   </div>
 </div>
