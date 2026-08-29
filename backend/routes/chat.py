@@ -2,10 +2,10 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import desc, select
+from sqlalchemy import desc, func, select
 from sqlalchemy.orm import Session
 
-from ai_client import generate_chat_title, get_ai_reply
+from ai_client import generate_chat_title, get_ai_reply, summarize_session_context
 from database import get_db
 from models.chat import ChatMessage, ChatRequest, ChatSession
 from models.user import User
@@ -23,6 +23,32 @@ def current_db_user(db: Session, claims: dict) -> User:
 
 def serialize_message(message: ChatMessage) -> dict:
     return {"role": message.role, "content": message.content, "timestamp": message.created_at}
+
+
+def refresh_context_summary(db: Session, session: ChatSession) -> None:
+    """Summarize only messages that have newly moved outside the 20-message window."""
+    total_messages = db.scalar(select(func.count(ChatMessage.id)).where(ChatMessage.session_id == session.id)) or 0
+    messages_to_remember = max(0, total_messages - 20)
+    newly_overflowed = messages_to_remember - session.context_message_count
+    if newly_overflowed <= 0:
+        return
+    messages = db.scalars(
+        select(ChatMessage)
+        .where(ChatMessage.session_id == session.id)
+        .order_by(ChatMessage.created_at, ChatMessage.id)
+        .offset(session.context_message_count)
+        .limit(newly_overflowed)
+    ).all()
+    try:
+        updated_summary = summarize_session_context(
+            session.context_summary,
+            [{"role": message.role, "content": message.content} for message in messages],
+        )
+    except Exception:
+        return
+    if updated_summary:
+        session.context_summary = updated_summary
+        session.context_message_count = messages_to_remember
 
 
 @router.post("/new")
@@ -62,6 +88,7 @@ def send_message(request: ChatRequest, current_user=Depends(get_current_user), d
         except Exception:
             session.title = request.message.strip()[:57] or session.title
     session.updated_at = datetime.now(timezone.utc)
+    refresh_context_summary(db, session)
     db.commit()
     return {"reply": ai_reply, "title": session.title}
 

@@ -19,7 +19,7 @@ Evolve Aria from a general-purpose chatbot into a guided portfolio-building assi
 |---|---|---|
 | Dedicated feature branch | Complete | `codex/portfolio-assistant` |
 | Professional, convenient interface | In progress | Authentication and chat foundation refreshed; profile and portfolio screens remain. |
-| Session history and same-session awareness | Foundation complete | User-owned sessions persist; the assistant receives the latest 20 messages from that session. Long-session summaries are planned. |
+| Session history and same-session awareness | Foundation complete | User-owned sessions preserve a durable summary of old messages plus the latest 20 messages verbatim. |
 | User registration and profile data | Foundation complete | Account and user-owned structured profile fields are stored in PostgreSQL. |
 | Manual chat-based data collection | Foundation complete | A user-owned chat session can generate a review-only structured profile draft; saving requires confirmation. |
 | CV/resume/LinkedIn/document input | In progress | Professional links and document metadata are stored; private file storage and extraction remain. |
@@ -85,6 +85,15 @@ Status: Complete; pending approval and commit.
 - Added assessment APIs that return an overall score, category scores, strengths, gaps, and prioritized actions.
 - Each assessment is saved against the exact immutable portfolio version it evaluated, preserving score history.
 - Verified locally that an assessment can be created and retrieved with explainable category results.
+
+### Task 7 — Long-session context summarization
+
+Status: Complete; pending approval and commit.
+
+- Added durable summary storage and an exact count of already-summarized messages per chat session.
+- When messages leave the latest 20-message window, only the newly overflowed messages are folded into the summary.
+- Aria receives the compact session memory plus the latest 20 messages for each response.
+- Verified locally that a summary grows only with newly overflowed messages and does not reprocess prior history.
 
 ## Current technical baseline
 
