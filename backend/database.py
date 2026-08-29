@@ -1,15 +1,27 @@
 import os
+
 from dotenv import load_dotenv
-from pymongo import MongoClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-MONGO_URL = os.getenv("MONGO_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL must be configured. See backend/.env.example.")
 
-client = MongoClient(MONGO_URL)
 
-db = client["chatbot"]
+class Base(DeclarativeBase):
+    pass
 
-messages_collection = db["messages"]
 
-conversations_collection = db["conversations"]
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

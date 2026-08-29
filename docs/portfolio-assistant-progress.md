@@ -1,0 +1,76 @@
+# Aria Portfolio Assistant — Project Tracker
+
+Last updated: 2026-08-29
+
+## Product goal
+
+Evolve Aria from a general-purpose chatbot into a guided portfolio-building assistant. A user should be able to enter their experience manually in chat, provide professional links or upload supporting documents, receive structured feedback, understand their portfolio readiness score, and keep multiple versions of their portfolio over time.
+
+## Working agreement
+
+1. Work is completed one task at a time.
+2. Each task is summarized for approval before the next functional task begins.
+3. This tracker is updated when a task starts and again when it is completed.
+4. Work is performed on the `codex/portfolio-assistant` branch.
+
+## Requirements and status
+
+| Requirement | Status | Notes |
+|---|---|---|
+| Dedicated feature branch | Complete | `codex/portfolio-assistant` |
+| Professional, convenient interface | In progress | Authentication and chat foundation refreshed; profile and portfolio screens remain. |
+| Session history and same-session awareness | Foundation complete | User-owned sessions persist; the assistant receives the latest 20 messages from that session. Long-session summaries are planned. |
+| User registration and profile data | Foundation complete | PostgreSQL user identity exists; structured profile fields are planned next. |
+| Manual chat-based data collection | In progress | Conversations are stored; structured fact extraction and confirmation are planned. |
+| CV/resume/LinkedIn/document input | Planned | Private object storage, processing status, and links will be added. |
+| Portfolio data and versions | Planned | Portfolio workspaces and immutable versions will be added. |
+| Standards-based strength score | Planned | A fixed, explainable rubric will be implemented after the portfolio data model. |
+| Existing MongoDB data migration | Planned | No existing data is migrated automatically. |
+
+## Completed work
+
+### Task 1 — Portfolio assistant frontend foundation
+
+Status: Complete and committed in `993b7ee`.
+
+- Created the feature branch.
+- Redesigned login, signup, and chat pages for the portfolio-assistant experience.
+- Preserved existing frontend API behavior.
+- Added the [data model blueprint](portfolio-assistant-data-model.md).
+
+### Task 2 — PostgreSQL session and chat foundation
+
+Status: Complete; pending commit.
+
+- Replaced MongoDB collection access with SQLAlchemy models for users, chat sessions, and messages.
+- Added user-owned session authorization for every chat operation.
+- Preserved full chat history and supplied the latest 20 same-session messages to the model.
+- Added `context_summary` for the later long-session context feature.
+- Added PostgreSQL configuration and dependencies.
+- Validated the relational models using an in-memory database.
+
+## Current technical baseline
+
+- API: FastAPI.
+- Database: PostgreSQL through SQLAlchemy and `psycopg`.
+- AI: OpenAI chat completions.
+- Authentication: bcrypt password hashes and 24-hour JWTs.
+- Frontend: static HTML, CSS, and JavaScript.
+- Files: not yet stored; the target approach is private object storage with short-lived download URLs.
+
+## Planned task sequence
+
+1. User profile and document-input foundation.
+2. Structured data extraction and user confirmation from chat/documents.
+3. Portfolio workspace, sections, and immutable version history.
+4. Explainable portfolio-strength scoring rubric and improvement plan.
+5. Long-session context summarization and context retrieval.
+6. Professional portfolio dashboard and remaining frontend flows.
+7. PostgreSQL migration workflow, security hardening, and deployment preparation.
+
+## Configuration needed before deployment
+
+- Provision a PostgreSQL database and set `DATABASE_URL`.
+- Set a strong `JWT_SECRET_KEY`.
+- Set `OPENAI_API_KEY`.
+- Choose a private object-storage provider before enabling document uploads.

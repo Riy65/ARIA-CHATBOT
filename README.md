@@ -7,7 +7,7 @@ Aria AI Chatbot is a full-stack AI-powered conversational web application that a
 ## ✨ Features
 
 - Secure User Authentication (Login & Signup)
-- AI-powered Conversations using Google Gemini
+- AI-powered portfolio conversations using OpenAI
 - Multiple Chat Sessions
 - Automatic Conversation Title Generation
 - Persistent Chat History
@@ -22,8 +22,8 @@ Aria AI Chatbot is a full-stack AI-powered conversational web application that a
 | Technology | Why it was used | Benefits |
 |------------|-----------------|----------|
 | **FastAPI** | Backend API development | High performance, automatic API documentation, easy REST API development |
-| **MongoDB Atlas** | Database | Flexible NoSQL storage, scalable, stores chat history efficiently |
-| **Google Gemini API** | AI response generation | Fast, high-quality AI responses with a generous free tier |
+| **PostgreSQL** | Database | Strong relationships for users, chat sessions, and portfolio versions |
+| **OpenAI API** | AI response generation | Portfolio-aware conversations and content analysis |
 | **JWT** | User Authentication | Secure, stateless authentication without server-side sessions |
 | **Passlib (bcrypt)** | Password Hashing | Prevents storing plain-text passwords and improves security |
 | **HTML, CSS, JavaScript** | Frontend Development | Lightweight, responsive, and easy to customize |
@@ -67,14 +67,15 @@ pip install -r backend/requirements.txt
 3. Create a `.env` file inside `backend/`:
 
 ```env
-MONGO_URL=YOUR_MONGODB_CONNECTION_STRING
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/aria
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 JWT_SECRET_KEY=YOUR_SECRET_KEY
 ```
 
 4. Start the backend:
 
 ```bash
+cd backend
 uvicorn main:app --reload
 ```
 
