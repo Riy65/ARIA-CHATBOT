@@ -310,8 +310,12 @@ fileInput.addEventListener("change", async function () {
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.detail || "Unable to upload this file.");
-        composerHint.textContent = `${data.original_filename} uploaded securely. Tell Aria what you would like help with.`;
-        appendMessage("assistant", `I’ve saved “${data.original_filename}”. Document extraction will be available in a future update; you can already describe what you would like to improve.`);
+        if (data.extraction_status !== "completed") {
+            throw new Error("The document was uploaded, but Gemini could not extract its portfolio details. Check your Gemini API key and model, then try again.");
+        }
+        const extractedSections = Object.keys(data.extracted_facts || {}).length;
+        composerHint.textContent = `${data.original_filename} analyzed. Gemini will use it as portfolio context in this chat.`;
+        appendMessage("assistant", `I’ve analyzed “${data.original_filename}” and found ${extractedSections} portfolio detail${extractedSections === 1 ? "" : "s"}. Ask me to create or improve your portfolio, and I’ll use this document as context.`);
     } catch (error) {
         composerHint.textContent = error.message;
     } finally {
@@ -339,7 +343,7 @@ function sendMessage() {
 
             typingEl.querySelector(".bubble").innerHTML =
 
-                `<div class="ai-label">Aria</div>${escapeHtml(result.reply)}`;
+                assistantBubbleContent(result.reply);
                 if (result.title) {
             await loadConversations();
         }
@@ -354,7 +358,7 @@ function sendMessage() {
 
             typingEl.querySelector(".bubble").innerHTML =
 
-                `<div class="ai-label">Aria</div>${escapeHtml(err.message)}`;
+                assistantBubbleContent(err.message);
 
         });
 
@@ -426,7 +430,7 @@ function appendMessage(role, text) {
 
         row.innerHTML =
 
-            `<div class="bubble user">${escapeHtml(text)}</div>`;
+            `<div class="bubble user"><div class="message-content">${escapeHtml(text).replace(/\r?\n/g, "<br>")}</div></div>`;
 
     }
 
@@ -434,7 +438,7 @@ function appendMessage(role, text) {
 
         row.innerHTML =
 
-            `<div class="bubble ai"><div class="ai-label">Aria</div>${escapeHtml(text)}</div>`;
+            `<div class="bubble ai">${assistantBubbleContent(text)}</div>`;
 
     }
 
@@ -482,6 +486,101 @@ function escapeHtml(str) {
     div.textContent = str;
 
     return div.innerHTML;
+
+}
+
+function formatInlineMarkdown(text) {
+
+    return text
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>');
+
+}
+
+function renderMarkdown(text) {
+
+    const lines = escapeHtml(String(text || "")).replace(/\r\n?/g, "\n").split("\n");
+    const output = [];
+    let paragraph = [];
+    let listType = null;
+    let codeLines = null;
+
+    function closeParagraph() {
+        if (paragraph.length) {
+            output.push(`<p>${formatInlineMarkdown(paragraph.join("<br>"))}</p>`);
+            paragraph = [];
+        }
+    }
+
+    function closeList() {
+        if (listType) {
+            output.push(`</${listType}>`);
+            listType = null;
+        }
+    }
+
+    lines.forEach((line) => {
+        if (line.trim().startsWith("```")) {
+            closeParagraph();
+            closeList();
+            if (codeLines === null) {
+                codeLines = [];
+            } else {
+                output.push(`<pre><code>${codeLines.join("\n")}</code></pre>`);
+                codeLines = null;
+            }
+            return;
+        }
+        if (codeLines !== null) {
+            codeLines.push(line);
+            return;
+        }
+        const heading = line.match(/^(#{1,3})\s+(.+)$/);
+        const orderedItem = line.match(/^\d+[.)]\s+(.+)$/);
+        const unorderedItem = line.match(/^[-*]\s+(.+)$/);
+        const quote = line.match(/^>\s?(.+)$/);
+
+        if (!line.trim()) {
+            closeParagraph();
+            closeList();
+        } else if (heading) {
+            closeParagraph();
+            closeList();
+            const level = heading[1].length;
+            output.push(`<h${level}>${formatInlineMarkdown(heading[2])}</h${level}>`);
+        } else if (quote) {
+            closeParagraph();
+            closeList();
+            output.push(`<blockquote>${formatInlineMarkdown(quote[1])}</blockquote>`);
+        } else if (orderedItem || unorderedItem) {
+            closeParagraph();
+            const nextListType = orderedItem ? "ol" : "ul";
+            if (listType !== nextListType) {
+                closeList();
+                listType = nextListType;
+                output.push(`<${listType}>`);
+            }
+            output.push(`<li>${formatInlineMarkdown((orderedItem || unorderedItem)[1])}</li>`);
+        } else {
+            closeList();
+            paragraph.push(line);
+        }
+    });
+
+    closeParagraph();
+    closeList();
+    if (codeLines !== null) output.push(`<pre><code>${codeLines.join("\n")}</code></pre>`);
+    return output.join("");
+
+}
+
+function assistantBubbleContent(text) {
+
+    return `<div class="ai-label">Aria</div><div class="message-content">${renderMarkdown(text)}</div>`;
 
 }
 

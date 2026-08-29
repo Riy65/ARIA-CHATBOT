@@ -45,6 +45,17 @@ class UploadedFile(Base):
     user = relationship("User", back_populates="uploaded_files")
 
 
+class DocumentExtraction(Base):
+    """AI-derived document context retained separately from the original file."""
+    __tablename__ = "document_extractions"
+
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    uploaded_file_id: Mapped[UUID] = mapped_column(ForeignKey("uploaded_files.id", ondelete="CASCADE"), unique=True, index=True)
+    extracted_facts: Mapped[dict] = mapped_column(JSON, default=dict)
+    context_excerpt: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
 class ProfileUpdate(BaseModel):
     full_name: str | None = Field(default=None, max_length=160)
     headline: str | None = Field(default=None, max_length=220)

@@ -1,4 +1,6 @@
+import os
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from routes import chat
 from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import router as auth_router
@@ -42,8 +44,9 @@ app.include_router(assessment_router, prefix="/portfolios", tags=["Portfolio ass
 def create_database_tables():
     Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def root():
-    return {"message": "Chatbot backend running"}
 
+# Serve static frontend files
+frontend_dir = os.path.join(os.path.dirname(__file__), "..", "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
 

@@ -2,11 +2,13 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import HTMLResponse
 from sqlalchemy import desc, select
 from sqlalchemy.orm import Session
 
 from database import get_db
 from models.portfolio import Portfolio, PortfolioCreate, PortfolioVersion, PortfolioVersionCreate
+from services.portfolio_export import render_portfolio_html
 from models.user import User
 from utils.auth import get_current_user
 
@@ -74,3 +76,26 @@ def create_portfolio_version(portfolio_id: UUID, payload: PortfolioVersionCreate
     db.commit()
     db.refresh(version)
     return serialize_version(version)
+
+
+def portfolio_version_for_user(db: Session, portfolio_id: UUID, version_id: UUID, user_id: int) -> tuple[Portfolio, PortfolioVersion]:
+    portfolio = owned_portfolio(db, portfolio_id, user_id)
+    version = db.scalar(select(PortfolioVersion).where(PortfolioVersion.id == version_id, PortfolioVersion.portfolio_id == portfolio.id))
+    if not version:
+        raise HTTPException(status_code=404, detail="Portfolio version not found")
+    return portfolio, version
+
+
+@router.get("/{portfolio_id}/versions/{version_id}/render", response_class=HTMLResponse)
+def render_portfolio_version(portfolio_id: UUID, version_id: UUID, current_user=Depends(get_current_user), db: Session = Depends(get_db)):
+    user = current_db_user(db, current_user)
+    portfolio, version = portfolio_version_for_user(db, portfolio_id, version_id, user.id)
+    return render_portfolio_html(portfolio.name, portfolio.target_role, version.version_number, version.content)
+
+
+@router.get("/{portfolio_id}/versions/{version_id}/download", response_class=HTMLResponse)
+def download_portfolio_version(portfolio_id: UUID, version_id: UUID, current_user=Depends(get_current_user), db: Session = Depends(get_db)):
+    user = current_db_user(db, current_user)
+    portfolio, version = portfolio_version_for_user(db, portfolio_id, version_id, user.id)
+    filename = "".join(character if character.isalnum() else "-" for character in portfolio.name.lower()).strip("-") or "portfolio"
+    return HTMLResponse(render_portfolio_html(portfolio.name, portfolio.target_role, version.version_number, version.content), headers={"Content-Disposition": f'attachment; filename="{filename}-v{version.version_number}.html"'})

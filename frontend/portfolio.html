@@ -20,13 +20,14 @@
           <label for="portfolio-content">Portfolio content</label><textarea id="portfolio-content" rows="16" spellcheck="false" aria-describedby="content-help"></textarea>
           <p id="content-help" class="field-help">Use JSON with sections such as <code>projects</code>, <code>experience</code>, <code>skills</code>, and <code>education</code>. Your original version is always preserved.</p>
           <label for="change-summary">What changed?</label><input id="change-summary" maxlength="5000" placeholder="e.g. Added case-study outcomes">
-          <div class="editor-actions"><button class="auth-btn" type="submit">Save as new version</button><button class="secondary-btn" type="button" id="assess-btn">Score this version</button></div><p id="form-status" class="form-status" role="status"></p>
+          <div class="editor-actions"><button class="auth-btn" type="submit">Save as new version</button><button class="secondary-btn" type="button" id="preview-btn">Preview page</button><button class="secondary-btn" type="button" id="download-btn">Download HTML</button><button class="secondary-btn" type="button" id="assess-btn">Score this version</button></div><p id="form-status" class="form-status" role="status"></p>
         </form>
         <section id="assessment-card" class="assessment-card" hidden></section>
       </section>
     </div>
   </main>
   <dialog id="create-dialog" class="create-dialog"><form id="create-portfolio-form" method="dialog"><button type="button" class="dialog-close" id="dialog-close-btn" aria-label="Close">×</button><p class="eyebrow">New workspace</p><h2>Name your portfolio</h2><label for="new-portfolio-name">Portfolio name</label><input id="new-portfolio-name" required maxlength="160" placeholder="My product design portfolio"><label for="new-target-role">Target role</label><input id="new-target-role" maxlength="160" placeholder="e.g. Product designer"><button class="auth-btn" type="submit">Create portfolio</button></form></dialog>
+  <dialog id="preview-dialog" class="preview-dialog"><div class="preview-dialog-bar"><strong id="preview-dialog-title">Portfolio preview</strong><button type="button" class="dialog-close" id="preview-close-btn" aria-label="Close">×</button></div><iframe id="portfolio-preview" title="Portfolio preview" sandbox></iframe></dialog>
   <script src="portfolio.js"></script>
 </body>
 </html>
