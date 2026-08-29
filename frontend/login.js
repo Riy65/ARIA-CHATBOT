@@ -1,6 +1,6 @@
 const loginForm = document.getElementById("loginForm");
 const loginBtn = document.getElementById("loginBtn");
-const API_URL= "https://aria-chatbot-1shq.onrender.com"
+const API_URL = window.ARIA_API_URL || "";
 if (localStorage.getItem("token")) {
 
     window.location.replace("index.html");

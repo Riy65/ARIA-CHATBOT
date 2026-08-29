@@ -64,7 +64,7 @@ aria-chatbot/
 pip install -r backend/requirements.txt
 ```
 
-3. Create a `.env` file inside `backend/`:
+3. Optionally create a `.env` file inside `backend/` for production services:
 
 ```env
 DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/aria
@@ -72,14 +72,16 @@ OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 JWT_SECRET_KEY=YOUR_SECRET_KEY
 ```
 
-4. Start the backend:
+Without a `.env`, Aria uses a local SQLite database at `backend/aria.db` and a development JWT secret. This is ideal for trying the project locally; set both values before deploying.
+
+4. Start the app:
 
 ```bash
 cd backend
 uvicorn main:app --reload
 ```
 
-5. Open `frontend/login.html` using Live Server.
+5. Open [http://127.0.0.1:8000/login.html](http://127.0.0.1:8000/login.html). FastAPI serves the frontend and API together.
 
 ---
 

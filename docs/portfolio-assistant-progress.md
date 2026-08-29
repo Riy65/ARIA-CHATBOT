@@ -18,7 +18,7 @@ Evolve Aria from a general-purpose chatbot into a guided portfolio-building assi
 | Requirement | Status | Notes |
 |---|---|---|
 | Dedicated feature branch | Complete | `codex/portfolio-assistant` |
-| Professional, convenient interface | In progress | Authentication and chat foundation refreshed; profile and portfolio screens remain. |
+| Professional, convenient interface | In progress | Authentication, chat, and portfolio workspace flows are available; profile and source-management screens remain. |
 | Session history and same-session awareness | Foundation complete | User-owned sessions preserve a durable summary of old messages plus the latest 20 messages verbatim. |
 | User registration and profile data | Foundation complete | Account and user-owned structured profile fields are stored in PostgreSQL. |
 | Manual chat-based data collection | Foundation complete | A user-owned chat session can generate a review-only structured profile draft; saving requires confirmation. |
@@ -94,6 +94,24 @@ Status: Complete; pending approval and commit.
 - When messages leave the latest 20-message window, only the newly overflowed messages are folded into the summary.
 - Aria receives the compact session memory plus the latest 20 messages for each response.
 - Verified locally that a summary grows only with newly overflowed messages and does not reprocess prior history.
+
+### Task 8 — Runnable local app and portfolio workspace
+
+Status: Complete; pending commit.
+
+- Made PostgreSQL optional for local development: the app now starts with a local SQLite database when `DATABASE_URL` is not set.
+- Served the static frontend from FastAPI, allowing the full product to run from one local origin without Live Server.
+- Added an offline portfolio-guidance fallback when `OPENAI_API_KEY` is not configured, so saved chat remains usable during setup.
+- Added the portfolio workspace UI: create a portfolio, create immutable content versions, and request an explainable readiness score.
+- Updated the run instructions to use the one-command local startup flow.
+
+### Task 9 — Local document upload
+
+Status: Complete; pending commit.
+
+- Added a visible chat-composer file picker for PDF, DOC, DOCX, and TXT documents up to 10 MB.
+- Added user-owned local private storage and upload metadata through `POST /profile/uploads`.
+- Files remain private and are not served from the static frontend; document content extraction is still a future task.
 
 ## Current technical baseline
 

@@ -7,8 +7,10 @@ const newChatBtn = document.getElementById('new-chat-btn');
 const chatTopbar = document.getElementById('chat-topbar');
 const logoutBtn = document.getElementById('logout-btn');
 const historyList = document.getElementById('history-list');
+const fileInput = document.getElementById('file-input');
+const composerHint = document.getElementById('composer-hint');
 
-const API_URL= "https://aria-chatbot-1shq.onrender.com"
+const API_URL = window.ARIA_API_URL || "";
 let currentConversationId = null;
 const token = localStorage.getItem("token");
 
@@ -288,6 +290,34 @@ msgInput.addEventListener('keydown', function (e) {
 });
 
 sendBtn.addEventListener('click', sendMessage);
+
+fileInput.addEventListener("change", async function () {
+    const [file] = this.files;
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+        composerHint.textContent = "That file is larger than 10 MB. Please choose a smaller file.";
+        this.value = "";
+        return;
+    }
+    composerHint.textContent = `Uploading ${file.name}…`;
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await fetch(`${API_URL}/profile/uploads`, {
+            method: "POST",
+            headers: { "Authorization": "Bearer " + token },
+            body: formData,
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Unable to upload this file.");
+        composerHint.textContent = `${data.original_filename} uploaded securely. Tell Aria what you would like help with.`;
+        appendMessage("assistant", `I’ve saved “${data.original_filename}”. Document extraction will be available in a future update; you can already describe what you would like to improve.`);
+    } catch (error) {
+        composerHint.textContent = error.message;
+    } finally {
+        this.value = "";
+    }
+});
 
 function sendMessage() {
 
