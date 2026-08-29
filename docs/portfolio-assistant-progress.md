@@ -21,7 +21,7 @@ Evolve Aria from a general-purpose chatbot into a guided portfolio-building assi
 | Professional, convenient interface | In progress | Authentication and chat foundation refreshed; profile and portfolio screens remain. |
 | Session history and same-session awareness | Foundation complete | User-owned sessions persist; the assistant receives the latest 20 messages from that session. Long-session summaries are planned. |
 | User registration and profile data | Foundation complete | Account and user-owned structured profile fields are stored in PostgreSQL. |
-| Manual chat-based data collection | In progress | Conversations are stored; structured fact extraction and confirmation are planned. |
+| Manual chat-based data collection | Foundation complete | A user-owned chat session can generate a review-only structured profile draft; saving requires confirmation. |
 | CV/resume/LinkedIn/document input | In progress | Professional links and document metadata are stored; private file storage and extraction remain. |
 | Portfolio data and versions | Planned | Portfolio workspaces and immutable versions will be added. |
 | Standards-based strength score | Planned | A fixed, explainable rubric will be implemented after the portfolio data model. |
@@ -51,12 +51,22 @@ Status: Complete; pending commit.
 
 ### Task 3 — User profile and document-input foundation
 
-Status: Complete; pending approval and commit.
+Status: Complete and committed in `123a3b3`.
 
 - Added a user-owned profile API for name, headline, location, target role, bio, LinkedIn URL, website URL, and manual details.
 - Added APIs to save and list professional links, such as a LinkedIn profile or hosted resume.
 - Added document metadata fields for future uploads, including private storage key, content type, size, and extraction status.
 - File contents remain out of the database; private object-storage integration will follow once a provider is selected.
+
+### Task 4 — Structured profile extraction with user confirmation
+
+Status: Complete; pending approval and commit.
+
+- Added `POST /profile/drafts/from-chat/{conversation_id}` for user-owned conversation extraction.
+- The extraction prompt accepts only explicit user-provided facts and filters its output to supported profile fields.
+- The endpoint returns a review-only draft with `confirmation_required: true`; it never writes to the profile.
+- The existing `PUT /profile` endpoint remains the explicit confirmation and save step.
+- Verified with a mocked local end-to-end test that confirmed the draft does not change the profile before confirmation.
 
 ## Current technical baseline
 
