@@ -17,6 +17,7 @@ class User(Base):
     chat_sessions = relationship("ChatSession", back_populates="user", cascade="all, delete-orphan")
     profile = relationship("UserProfile", back_populates="user", cascade="all, delete-orphan", uselist=False)
     uploaded_files = relationship("UploadedFile", back_populates="user", cascade="all, delete-orphan")
+    portfolios = relationship("Portfolio", back_populates="user", cascade="all, delete-orphan")
 
 
 class UserCreate(BaseModel):

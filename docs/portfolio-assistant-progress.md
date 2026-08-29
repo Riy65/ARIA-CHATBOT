@@ -23,7 +23,7 @@ Evolve Aria from a general-purpose chatbot into a guided portfolio-building assi
 | User registration and profile data | Foundation complete | Account and user-owned structured profile fields are stored in PostgreSQL. |
 | Manual chat-based data collection | Foundation complete | A user-owned chat session can generate a review-only structured profile draft; saving requires confirmation. |
 | CV/resume/LinkedIn/document input | In progress | Professional links and document metadata are stored; private file storage and extraction remain. |
-| Portfolio data and versions | Planned | Portfolio workspaces and immutable versions will be added. |
+| Portfolio data and versions | Foundation complete | User-owned workspaces start with version 1; every later save creates a separate immutable version. |
 | Standards-based strength score | Planned | A fixed, explainable rubric will be implemented after the portfolio data model. |
 | Existing MongoDB data migration | Planned | No existing data is migrated automatically. |
 
@@ -67,6 +67,15 @@ Status: Complete; pending approval and commit.
 - The endpoint returns a review-only draft with `confirmation_required: true`; it never writes to the profile.
 - The existing `PUT /profile` endpoint remains the explicit confirmation and save step.
 - Verified with a mocked local end-to-end test that confirmed the draft does not change the profile before confirmation.
+
+### Task 5 — Portfolio workspace and immutable versions
+
+Status: Complete; pending approval and commit.
+
+- Added user-owned portfolio workspaces with a name and optional target role.
+- Every portfolio starts with an immutable version 1, and every later save creates a new sequential version.
+- Added APIs to create, list, inspect, and add a version to portfolios.
+- Verified locally that version 2 does not overwrite the original version content.
 
 ## Current technical baseline
 
