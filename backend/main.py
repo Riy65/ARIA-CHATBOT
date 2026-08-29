@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from routes import chat
 from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import router as auth_router
+from routes.profile import router as profile_router
 from database import Base, engine
 from models import chat as chat_models
 from models import user as user_models
+from models import profile as profile_models
 
 
 app = FastAPI(
@@ -28,6 +30,7 @@ app.include_router(
 )
 
 app.include_router(chat.router, prefix="/chat")
+app.include_router(profile_router, prefix="/profile", tags=["Profile"])
 
 
 @app.on_event("startup")

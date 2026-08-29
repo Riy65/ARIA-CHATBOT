@@ -15,6 +15,8 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     chat_sessions = relationship("ChatSession", back_populates="user", cascade="all, delete-orphan")
+    profile = relationship("UserProfile", back_populates="user", cascade="all, delete-orphan", uselist=False)
+    uploaded_files = relationship("UploadedFile", back_populates="user", cascade="all, delete-orphan")
 
 
 class UserCreate(BaseModel):
